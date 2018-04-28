@@ -4,8 +4,8 @@ import java.util.*;
 
 public abstract class AbstractGraph<V> implements Graph<V> {
   protected List<V> vertices = new ArrayList<>(); // Store vertices
-  protected List<List<Edge>> neighbors 
-    = new ArrayList<>(); // Adjacency lists
+  protected Map<Integer, List<Edge>> neighbors
+    = new LinkedHashMap<>(); // Adjacency lists
 
   /** Construct an empty graph */
   protected AbstractGraph() {
@@ -115,7 +115,7 @@ public abstract class AbstractGraph<V> implements Graph<V> {
   public boolean addVertex(V vertex) {
     if (!vertices.contains(vertex)) {
       vertices.add(vertex);
-      neighbors.add(new ArrayList<Edge>());
+      neighbors.put((Integer) vertex, new ArrayList<Edge>());
       return true;
     }
     else {
@@ -125,11 +125,9 @@ public abstract class AbstractGraph<V> implements Graph<V> {
 
   /** Add an edge to the graph */  
   protected boolean addEdge(Edge e) {
-    if (e.u < 0 || e.u > getSize() - 1)
+    if (!vertices.contains(e.u) && !vertices.contains(e.v))
       throw new IllegalArgumentException("No such index: " + e.u);
 
-    if (e.v < 0 || e.v > getSize() - 1)
-      throw new IllegalArgumentException("No such index: " + e.v);
     
     if (!neighbors.get(e.u).contains(e)) {
       neighbors.get(e.u).add(e);

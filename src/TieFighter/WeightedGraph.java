@@ -41,8 +41,8 @@ public class WeightedGraph<V> extends AbstractGraph<V> {
   private void createWeightedGraph(List<V> vertices, int[][] edges) {
     this.vertices = vertices;     
 
-    for (int i = 0; i < vertices.size(); i++) {
-      neighbors.add(new ArrayList<Edge>()); // Create a list for vertices
+    for (Object v: vertices) {
+      neighbors.put((Integer) v, new ArrayList<Edge>()); // Create a list for vertices
     }
 
     for (int i = 0; i < edges.length; i++) {
@@ -54,10 +54,10 @@ public class WeightedGraph<V> extends AbstractGraph<V> {
   /** Create adjacency lists from edge lists */
   private void createWeightedGraph(
       List<V> vertices, List<WeightedEdge> edges) {
-    this.vertices = vertices;     
+    this.vertices = vertices;
 
-    for (int i = 0; i < vertices.size(); i++) {
-      neighbors.add(new ArrayList<Edge>()); // Create a list for vertices
+    for (Object v: vertices) {
+      neighbors.put((Integer) v, new ArrayList<Edge>()); // Create a list for vertices
     }
 
     for (WeightedEdge edge: edges) {      
@@ -78,9 +78,9 @@ public class WeightedGraph<V> extends AbstractGraph<V> {
   
   /** Display edges with weights */
   public void printWeightedEdges() {
-    for (int i = 0; i < getSize(); i++) {
-      System.out.print(getVertex(i) + " (" + i + "): ");
-      for (Edge edge : neighbors.get(i)) {
+    for (Object v: vertices) {
+//      System.out.print(getVertex((Integer) v) + " (" + v + "): ");
+      for (Edge edge : neighbors.get((Integer) v)) {
         System.out.print("(" + edge.u +
           ", " + edge.v + ", " + ((WeightedEdge)edge).weight + ") ");
       }
