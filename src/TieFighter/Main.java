@@ -3,6 +3,8 @@ package TieFighter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -13,6 +15,22 @@ public class Main {
         try {
             WeightedGraph galaxy = readGalaxy(galaxyInputFile);
             galaxy.printWeightedEdges();
+
+            Pilot james = new Pilot("James", -1.0, false);
+            Pilot ian = new Pilot("Ian", 5.0, true);
+            Pilot kevin = new Pilot("Kevin", 4.0, true);
+            Pilot jon = new Pilot("Jon", -1.0, false);
+
+            List pilots = new ArrayList<Pilot>();
+            pilots.add(james);
+            pilots.add(ian);
+            pilots.add(kevin);
+            pilots.add(jon);
+            System.out.print("Pilots presorted: ");
+            System.out.println(pilots);
+            Collections.sort(pilots);
+            System.out.print("Pilots post sorted: ");
+            System.out.println(pilots);
         } catch (FileNotFoundException e) {
             System.out.println(e);
         }
