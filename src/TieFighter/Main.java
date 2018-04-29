@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String galaxyPath = "galaxy2.txt";
-    private static final String pilotPath = "pilot_routes2.txt";
+    private static final String galaxyPath = "galaxy.txt";
+    private static final String pilotPath = "pilot_routes.txt";
     private static final String patrolsPath = "patrols.txt";
 
     public static void main(String[] args) {
@@ -20,7 +20,7 @@ public class Main {
         File patrolOutputFile = new File(patrolsPath);
         try {
             WeightedGraph galaxy = readGalaxy(galaxyInputFile);
-
+galaxy.printWeightedEdges();
             ArrayList<Pilot> pilots = readPilots(pilotInputFile, galaxy);
 
             writePatrols(pilots, patrolOutputFile);
