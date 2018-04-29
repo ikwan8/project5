@@ -88,6 +88,10 @@ public abstract class AbstractGraph<V> implements Graph<V> {
     return result;
   }
 
+  public List<Edge> getEdges(int index) {
+    return neighbors.get(index);
+  }
+
   @Override /** Return the degree for a specified vertex */
   public int getDegree(int v) {
     return neighbors.get(v).size();
@@ -156,6 +160,14 @@ public abstract class AbstractGraph<V> implements Graph<V> {
     
     public boolean equals(Object o) {
       return u == ((Edge)o).u && v == ((Edge)o).v; 
+    }
+
+    @Override
+    public String toString() {
+      return "Edge{" +
+              "u=" + u +
+              ", v=" + v +
+              '}';
     }
   }
   

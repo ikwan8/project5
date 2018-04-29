@@ -24,4 +24,13 @@ public class WeightedEdge extends AbstractGraph.Edge
       return -1;
     }
   }
+
+  @Override
+  public String toString() {
+    return "WeightedEdge{" +
+            "u=" + u + " " +
+            "v=" + v + " " +
+            "weight=" + weight +
+            '}';
+  }
 }

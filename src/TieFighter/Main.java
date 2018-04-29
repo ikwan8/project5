@@ -4,39 +4,31 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
+    private static final String galaxyPath = "galaxy3.txt";
+    private static final String pilotPath = "pilot_routes3.txt";
+    private static final String patrolsPath = "patrols.txt";
+
     public static void main(String[] args) {
 
-        File galaxyInputFile = new File("samplegalaxy.txt");
+        File galaxyInputFile = new File(galaxyPath);
+        File pilotInputFile = new File(pilotPath);
         try {
             WeightedGraph galaxy = readGalaxy(galaxyInputFile);
-            galaxy.printWeightedEdges();
 
-            Pilot james = new Pilot("James", -1.0, false);
-            Pilot ian = new Pilot("Ian", 5.0, true);
-            Pilot kevin = new Pilot("Kevin", 4.0, true);
-            Pilot jon = new Pilot("Jon", -1.0, false);
+            ArrayList<Pilot> pilots = readPilots(pilotInputFile, galaxy);
 
-            List pilots = new ArrayList<Pilot>();
-            pilots.add(james);
-            pilots.add(ian);
-            pilots.add(kevin);
-            pilots.add(jon);
-            System.out.print("Pilots presorted: ");
-            System.out.println(pilots);
             Collections.sort(pilots);
-            System.out.print("Pilots post sorted: ");
-            System.out.println(pilots);
+
         } catch (FileNotFoundException e) {
             System.out.println(e);
         }
     }
 
-    private static WeightedGraph readGalaxy(File inputFile) throws FileNotFoundException {
+    private static WeightedGraph readGalaxy (File inputFile) throws FileNotFoundException {
         try {
             Scanner input = new Scanner(inputFile);
 
@@ -72,4 +64,76 @@ public class Main {
         return null;
     }
 
+    private static ArrayList<Pilot> readPilots (File inputFile, WeightedGraph galaxy) {
+        try {
+            Scanner input = new Scanner(inputFile);
+
+            ArrayList<Pilot> pilots = new ArrayList<>();
+            while (input.hasNextLine()) {
+                String line = input.nextLine();
+                String[] splitLine = line.split(" ");
+                String name = "";
+                ArrayList<Integer> nodes = new ArrayList<Integer>();
+
+                for (int i = 0; i < splitLine.length; i++) {
+                    if (isNumeric(splitLine[i])) {
+                        nodes.add(Integer.parseInt(splitLine[i]));
+                    } else {
+                        name += splitLine[i] + " ";
+                    }
+                }
+
+                pilots.add(generatePilot(name, nodes, galaxy));
+            }
+            return pilots;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * A method to check if a given String is a valid floating-point numeric
+     * (double) value
+     *
+     * @param s     The string to be checked for numeric validity
+     * @return      A boolean indicating the numeric validity of the String
+     */
+    public static boolean isNumeric(String s)
+    {
+        try
+        {
+            double d = Double.parseDouble(s);   // Attempts to assign string to
+        }                                       // a double variable
+        catch(NumberFormatException n)
+        {
+            return false;                       // Caught exception returns false
+        }
+        return true;
+    }
+
+    private static Pilot generatePilot(String name, ArrayList<Integer> nodes, WeightedGraph galaxy) {
+        Boolean valid = true;
+        Double length = 0.0;
+        for(int i = 0; i < nodes.size() - 1; i++) {
+
+            Integer current = nodes.get(i);
+            Integer next = nodes.get(i+1);
+
+            if (galaxy.getNeighbors(current).contains(next)) {
+                for (Object o: galaxy.getEdges(current)) {
+                    WeightedEdge edge = (WeightedEdge) o;
+                    if (edge.v == next) {
+                        length += edge.weight;
+                        break;
+                    }
+                }
+            } else {
+                valid = false;
+                length = -1.0;
+                break;
+            }
+        }
+        return new Pilot(name, length, valid);
+    }
 }
