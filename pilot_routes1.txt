@@ -1,0 +1,10 @@
+Mirage 1 14 22 28
+Mickey 35 1 22 35 14
+Aztec 22 28 10
+Mirage gdf 1 14 22 28
+Mickey web 28 1 22 35 14
+Aztec qwgderf 35 14 10
+'''' 1 14 22 28
+---- 14 22 28
+name23 1 14 22 28
+-r345 1 35 22 
